@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.common.api.Api;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -25,9 +26,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+
 public class MapActivity extends AppCompatActivity
         implements  OnMapReadyCallback {
 
+    Supplier suppliers;
     private GoogleMap mMap;
     public Toolbar toolbar;
     public NavigationView navigationView;
@@ -35,6 +39,8 @@ public class MapActivity extends AppCompatActivity
     public MenuActivity navigationMenu;
     public Menu menu;
     int currentItemId;
+//    List suppliers = List<Supplier>;
+    private UPackApi api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,17 +101,21 @@ public class MapActivity extends AppCompatActivity
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(45.7602717, 21.2602395);
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-            mMap.getUiSettings().isMyLocationButtonEnabled();
-
-        }
-        mMap.getUiSettings().setMapToolbarEnabled(false);
-        mMap.addMarker(new MarkerOptions().position(sydney).title(""));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        populateMapWithSuppliers(googleMap);
     }
+
+    public void populateMapWithSuppliers(GoogleMap googleMap){
+        getSuppliers();
+
+    }
+
+    public void getSuppliers(){
+//        this.suppliers = this.api.call("/suppliers");
+    }
+
+    public void getPendingList(){
+
+    }
+
+
 }
