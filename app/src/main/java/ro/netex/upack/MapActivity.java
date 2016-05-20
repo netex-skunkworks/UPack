@@ -27,7 +27,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapActivity extends AppCompatActivity
         implements  OnMapReadyCallback {
-
+// TODO: claudiu test
     private GoogleMap mMap;
     public Toolbar toolbar;
     public NavigationView navigationView;
