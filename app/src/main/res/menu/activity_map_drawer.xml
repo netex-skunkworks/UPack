@@ -4,15 +4,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/supplier"
+            android:icon="@drawable/ic_menu_supplier"
             android:title="Supplier" />
         <item
             android:id="@+id/pedding_list"
+            android:icon="@drawable/ic_menu_supplier"
             android:title="Pedding List" />
         <item
             android:id="@+id/delivery"
+            android:icon="@drawable/ic_menu_supplier"
             android:title="Delivery" />
         <item
             android:id="@+id/account"
+            android:icon="@drawable/ic_menu_supplier"
             android:title="Account" />
     </group>
 
