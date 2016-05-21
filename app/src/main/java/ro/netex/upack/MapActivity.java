@@ -204,20 +204,18 @@ public class MapActivity extends AppCompatActivity
     }
 
     // get user coordinates
-    public JSONArray getCurrentUserLocation() {
+    public JSONObject getCurrentUserLocation() {
 
-        JSONArray coordinates = new JSONArray();
+        JSONObject coordinates = new JSONObject();
 
         LocationManager locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             double lat = location.getLatitude();
             double lng = location.getLongitude();
-            JSONObject itemA = new JSONObject();
             try {
-                itemA.put("lat", lat);
-                itemA.put("lng", lng);
-                coordinates.put(itemA);
+                coordinates.put("lat", lat);
+                coordinates.put("lng", lng);
 
             } catch (JSONException e) {
                 e.printStackTrace();
