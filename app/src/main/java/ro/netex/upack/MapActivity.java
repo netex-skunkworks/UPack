@@ -74,7 +74,7 @@ public class MapActivity extends AppCompatActivity
 
         // Application controller calls get_suppliers;
         appController = new AppController(this, this.context);
-        appController.getSuppliers(this);
+        appController.getSuppliers();
 
 
         addNavigationToolbar();
@@ -127,7 +127,7 @@ public class MapActivity extends AppCompatActivity
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        appController.getSuppliers(this);
+        appController.getSuppliers();
         mMap = googleMap;
         mMap.getUiSettings().setMapToolbarEnabled(false);
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -167,7 +167,7 @@ public class MapActivity extends AppCompatActivity
 
     public void test(){
         AppController appController = new AppController(this, this.context);
-        appController.getAvailablePackages(this.context);
+        appController.getAvailablePackages();
     }
 
     // set zoom to current user location

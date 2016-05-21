@@ -72,7 +72,7 @@ public class UPackApi {
                 break;
 
             case "get_packages":
-                ((PackageActivity) context).populateList();
+                ((PackageActivity) context).populateList(response);
                 break;
         }
     }

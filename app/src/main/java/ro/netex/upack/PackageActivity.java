@@ -6,28 +6,42 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
+
 public class PackageActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_package);
+        MapActivity mapActivity = new MapActivity();
+        AppController appController = new AppController(mapActivity, this);
+        appController.getAvailablePackages();
     }
 
-    public void populateList()
+    public void populateList(JSONArray data)
     {
 
         ListView listView1 = (ListView) findViewById(R.id.packageList);
 
-        Package[] items = {
-                new Package(1, "Milk", 21.50),
-                new Package(2, "Butter", 15.99),
-                new Package(3, "Yogurt", 14.90),
-                new Package(4, "Toothpaste", 7.99),
-                new Package(5, "Ice Cream", 10.00),
-        };
+        List<String> items;
+        items = null;
+        for (int i = 0; i < data.length(); i++) {
+            JSONObject jsonobject = null;
+            try {
+                jsonobject = data.getJSONObject(i);
+                items.add(jsonobject.getString("status"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
-        ArrayAdapter<Package> adapter = new ArrayAdapter<Package>(this,
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, items);
 
         listView1.setAdapter(adapter);
