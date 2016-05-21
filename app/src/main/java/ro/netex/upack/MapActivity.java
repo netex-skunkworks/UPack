@@ -66,7 +66,7 @@ public class MapActivity extends AppCompatActivity
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         this.context = this;
-
+        getSuppliers();
         addNavigationToolbar();
 
     }
@@ -152,7 +152,7 @@ public class MapActivity extends AppCompatActivity
     }
 
     public void getSuppliers() {
-        this.api = new UPackApi("172.16.4.74", this);
+        this.api = new UPackApi("hacktm.netex.ro", this);
         this.api.call("get_suppliers");
     }
 
