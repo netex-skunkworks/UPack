@@ -18,7 +18,7 @@ public class UPackApi {
     }
 
     public void call(String route) {
-        request("http://" + serverAddress + "/mockup/" + route + ".php");
+        request("http://" + serverAddress + "/rest/" + route + ".php");
     }
 
     public void request(String url) {
