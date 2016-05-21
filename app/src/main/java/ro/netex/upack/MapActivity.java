@@ -111,10 +111,15 @@ public class MapActivity extends AppCompatActivity
 
     public void populateMapWithSuppliers(JSONObject suppliers) {
 
+        Log.i("response",suppliers.toString());
+//        LatLng sydney = new LatLng(-34, 151);
+//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
     public void getSuppliers(){
         this.api = new UPackApi("172.16.4.74", this);
+        this.api.call("get_suppliers");
     }
 
 }
