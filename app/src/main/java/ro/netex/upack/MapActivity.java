@@ -140,7 +140,7 @@ public class MapActivity extends AppCompatActivity
                 Double lat = address.getDouble("lat");
                 Double lng = address.getDouble("lng");
                 // Add a marker supplier coordinates on map
-                LatLng supplierLat = new LatLng(52.1234, 22.1234);
+                LatLng supplierLat = new LatLng(lat, lng);
                 mMap.addMarker(new MarkerOptions().position(supplierLat).title(name));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(supplierLat));
 

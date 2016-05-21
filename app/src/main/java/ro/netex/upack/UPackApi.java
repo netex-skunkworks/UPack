@@ -1,20 +1,18 @@
 package ro.netex.upack;
 import android.util.Log;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.io.IOException;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
 public class UPackApi {
 
-    public static final String TAG = UPackApi.class.getSimpleName();
+    public static final String TAG = "UPackAPI";
 
     private String serverAddress;
     private MapActivity map;
@@ -25,14 +23,14 @@ public class UPackApi {
     }
 
     public void call(String route) {
-        try {
+        try{
             request("http://" + serverAddress + "/rest/" + route + ".php");
-        } catch (IOException e) {
-            e.printStackTrace();
+        }catch (Exception e){
+            Log.d(TAG, e.getMessage());
         }
     }
 
-    public void request(String url) throws IOException {
+    /*public void request(String url) throws IOException {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
@@ -56,9 +54,9 @@ public class UPackApi {
                     System.out.println(response.body().string());
                 }
             });
-        }
+        }*/
 
-   /* public void request(String url) {
+   public void request(String url) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this.map);
         // Request a string response from the provided URL.
@@ -76,6 +74,6 @@ public class UPackApi {
         });
         // Add the request to the RequestQueue.
         queue.add(jsonObjReq);
-    } */
+    }
 
 }
