@@ -8,10 +8,10 @@ public class AppController {
     MapActivity mapActivity;
 
 
-    public AppController(MapActivity mapActivity)
+    public AppController(MapActivity mapActivity, Context context)
     {
         this.mapActivity = mapActivity;
-        this.api = new UPackApi("hacktm.netex.ro", this.mapActivity, "0");
+        this.api = new UPackApi(mapActivity, "hacktm.netex.ro", context, "0");
     }
 
 

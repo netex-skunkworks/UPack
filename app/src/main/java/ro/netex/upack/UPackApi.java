@@ -21,12 +21,13 @@ public class UPackApi {
     private String route;
     private Object context;
 
-    public UPackApi(String serverAddress, Context context, String curierId) {
+    public UPackApi(MapActivity map, String serverAddress, Context context, String curierId) {
         this.curierId = "0";
         this.currentLat = 43.12345;
         this.currentLgn = 22.12345;
 
         this.context = context;
+        this.map = map;
         this.serverAddress = serverAddress;
     }
 
@@ -44,7 +45,7 @@ public class UPackApi {
 
    public void request(String url) {
         // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this.map);
+        RequestQueue queue = Volley.newRequestQueue(map);
         // Request a string response from the provided URL.
         JsonArrayRequest jsonObjReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {

@@ -73,7 +73,7 @@ public class MapActivity extends AppCompatActivity
         this.context = this;
 
         // Application controller calls get_suppliers;
-        appController = new AppController(this);
+        appController = new AppController(this, this.context);
         appController.getSuppliers(this);
 
 
@@ -166,7 +166,7 @@ public class MapActivity extends AppCompatActivity
     }
 
     public void test(){
-        AppController appController = new AppController(this);
+        AppController appController = new AppController(this, this.context);
         appController.getAvailablePackages(this.context);
     }
 
