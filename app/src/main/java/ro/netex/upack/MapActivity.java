@@ -1,34 +1,50 @@
 package ro.netex.upack;
 
+import android.app.ListActivity;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.SyncStateContract;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Iterator;
+import java.util.List;
 
 public class MapActivity extends AppCompatActivity
         implements OnMapReadyCallback {
@@ -40,19 +56,26 @@ public class MapActivity extends AppCompatActivity
     public MenuActivity navigationMenu;
     public Menu menu;
     int currentItemId;
+    JSONObject suppliers;
     UPackApi api;
     Context context;
+    Location currentLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        SupportMapFragment mapFragment = (SupportMapFragment) this.getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         this.context = this;
-        getSuppliers();
+
+        // Application controller calls get_suppliers;
+        appController = new AppController(this);
+        appController.getSuppliers(this);
+
+
         addNavigationToolbar();
 
     }
@@ -103,20 +126,12 @@ public class MapActivity extends AppCompatActivity
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        getSuppliers();
+        appController.getSuppliers(this);
         mMap = googleMap;
         mMap.getUiSettings().setMapToolbarEnabled(false);
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
-            mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener(){
-                @Override
-                public boolean onMyLocationButtonClick()
-                {
-                    //TODO: Any custom actions
-                    return false;
-                }
-            });
-//            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+            mMap.getUiSettings().setMyLocationButtonEnabled(false);
             zoomMapToCurrentLocation();
             getCurrentUserLocation();
         }
@@ -149,10 +164,9 @@ public class MapActivity extends AppCompatActivity
         }
     }
 
-    // get all available suppliers on Map
-    public void getSuppliers() {
-        this.api = new UPackApi("hacktm.netex.ro", this);
-        this.api.call("get_suppliers");
+    public void test(){
+        AppController appController = new AppController(this);
+        appController.getAvailablePackages(this.context);
     }
 
     // set zoom to current user location
@@ -226,8 +240,11 @@ public class MapActivity extends AppCompatActivity
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            Log.d("Coordonate", coordinates.toString());
         }
+
         return coordinates;
     }
+
 
 }
