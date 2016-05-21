@@ -25,6 +25,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Iterator;
 import java.util.List;
 
 public class MapActivity extends AppCompatActivity
@@ -37,7 +42,7 @@ public class MapActivity extends AppCompatActivity
     public MenuActivity navigationMenu;
     public Menu menu;
     int currentItemId;
-    List suppliers[];
+    JSONObject suppliers;
     UPackApi api;
 
     @Override
@@ -99,29 +104,36 @@ public class MapActivity extends AppCompatActivity
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        populateMapWithSuppliers(googleMap);
+        try {
+            populateMapWithSuppliers(googleMap);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void populateMapWithSuppliers(GoogleMap googleMap){
+    public void populateMapWithSuppliers(GoogleMap googleMap) throws JSONException {
 
         getSuppliers();
-        mMap = googleMap;
+//        for(int i=0;i<this.suppliers){
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(45.7602717, 21.2602395);
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-            mMap.getUiSettings().isMyLocationButtonEnabled();
+//        }
 
+//        Iterator iter = this.suppliers.keys();
+//        while(iter.hasNext()){
+//            String key = (String)iter.next();
+//            arr.add(obj.getString(key));
+//        }
+
+
+
+        for ( JSONObject obj : this.suppliers ) {
+            Log.i("populate",obj.toString());
         }
-        mMap.getUiSettings().setMapToolbarEnabled(false);
-        mMap.addMarker(new MarkerOptions().position(sydney).title(""));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
     public void getSuppliers(){
         this.api = new UPackApi("172.16.4.74");
-        this.api.call("/suppliers");
+        this.suppliers = this.api.call("get_suppliers");
     }
 
 }
