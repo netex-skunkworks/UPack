@@ -56,6 +56,7 @@ public class MapActivity extends AppCompatActivity
     public MenuActivity navigationMenu;
     public Menu menu;
     int currentItemId;
+    AppController appController;
     JSONObject suppliers;
     UPackApi api;
     Context context;
