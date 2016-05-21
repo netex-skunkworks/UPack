@@ -1,28 +1,38 @@
 package ro.netex.upack;
-
-import android.app.DownloadManager;
-import android.os.StrictMode;
-
-import com.google.android.gms.appdatasearch.GetRecentContextCall;
-
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-
-import java.io.IOException;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import org.json.JSONObject;
 
 public class UPackApi {
     private String serverAddress;
+    private MapActivity map;
 
-    public  UPackApi(String serverAddress){
+    public  UPackApi(String serverAddress, MapActivity map){
+        this.map = map;
         this.serverAddress = serverAddress;
     }
 
     public void call(String route){
-        request(serverAddress+route);
+        request(serverAddress+"/rest/"+route+".php");
     }
 
     public void request(String url) {
-        // send request to API
-        // TODO: claudiu implements this
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        map.populateMapWithSuppliers(response);
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Auto-generated method stub
+
+                    }
+                });
     }
 }
