@@ -1,4 +1,6 @@
 package ro.netex.upack;
+import android.util.Log;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -15,15 +17,17 @@ public class UPackApi {
     }
 
     public void call(String route){
-        request(serverAddress+"/rest/"+route+".php");
+        request("http://"+serverAddress+"/rest/"+route+".php");
     }
 
     public void request(String url) {
+        Log.d("url:", url);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
+                        Log.d("bunica:", response.toString());
                         map.populateMapWithSuppliers(response);
                     }
                 }, new Response.ErrorListener() {
