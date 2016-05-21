@@ -14,7 +14,7 @@ public class PackageActivity extends FragmentActivity {
         setContentView(R.layout.activity_package);
     }
 
-    public void popuplateList()
+    public void populateList()
     {
 
         ListView listView1 = (ListView) findViewById(R.id.packageList);

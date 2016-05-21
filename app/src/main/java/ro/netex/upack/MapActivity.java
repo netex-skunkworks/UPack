@@ -245,5 +245,11 @@ public class MapActivity extends AppCompatActivity
         return coordinates;
     }
 
+    // set navigation route to map
+
+    public void insertRootNavigation(JSONObject coordinates){
+
+    }
+
 
 }

@@ -71,7 +71,7 @@ public class UPackApi {
                 break;
 
             case "get_packages":
-                ((PackageActivity) context).popuplateList();
+                ((PackageActivity) context).populateList();
                 break;
         }
     }
