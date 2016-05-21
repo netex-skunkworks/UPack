@@ -10,9 +10,6 @@ import org.apache.http.params.HttpParams;
 
 import java.io.IOException;
 
-/**
- * Created by user on 5/20/16.
- */
 public class UPackApi {
     private String serverAddress;
 
@@ -26,6 +23,6 @@ public class UPackApi {
 
     public void request(String url) {
         // send request to API
-
+        // TODO: claudiu implements this
     }
 }
