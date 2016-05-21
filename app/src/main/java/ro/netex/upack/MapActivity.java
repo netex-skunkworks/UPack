@@ -1,6 +1,7 @@
 package ro.netex.upack;
 
 import android.content.ClipData;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -44,15 +45,19 @@ public class MapActivity extends AppCompatActivity
     int currentItemId;
     JSONObject suppliers;
     UPackApi api;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        Log.d("CONTEXT APP",this.toString());
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        this.context = this;
+
         addNavigationToolbar();
 
     }
@@ -109,16 +114,13 @@ public class MapActivity extends AppCompatActivity
 
     }
 
-    public void populateMapWithSuppliers(JSONObject suppliers) {
-
-        Log.i("response",suppliers.toString());
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    public void populateMapWithSuppliers(JSONArray suppliers) {
+        Log.d("response",suppliers.toString());
     }
 
     public void getSuppliers(){
-        this.api = new UPackApi("172.16.4.74", this);
+        Log.i("suppliers","GET");
+        this.api = new UPackApi("172.16.4.74",this);
         this.api.call("get_suppliers");
     }
 
