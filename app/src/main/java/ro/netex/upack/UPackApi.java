@@ -1,19 +1,12 @@
 package ro.netex.upack;
-
 import android.util.Log;
-
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class UPackApi {
     private String serverAddress;
@@ -41,7 +34,7 @@ public class UPackApi {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("That didn't work!", "blabla");
+                Log.d("ApiCallError!", error.getMessage());
             }
         });
         // Add the request to the RequestQueue.
