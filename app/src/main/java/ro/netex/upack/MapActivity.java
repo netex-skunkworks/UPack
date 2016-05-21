@@ -3,16 +3,19 @@ package ro.netex.upack;
 import android.app.ListActivity;
 import android.content.ClipData;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.SyncStateContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -25,6 +28,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -119,8 +123,12 @@ public class MapActivity extends AppCompatActivity
     public void onMapReady(GoogleMap googleMap) {
         getSuppliers();
         mMap = googleMap;
+        mMap.getUiSettings().setMapToolbarEnabled(false);
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+            zoomMapToCurrentLocation();
+            getCurrentUserLocation();
         }
 
     }
@@ -151,9 +159,88 @@ public class MapActivity extends AppCompatActivity
         }
     }
 
+    // get all available suppliers on Map
     public void getSuppliers() {
         this.api = new UPackApi("hacktm.netex.ro", this);
         this.api.call("get_suppliers");
     }
+
+    // set zoom to current user location
+    private void zoomMapToCurrentLocation() {
+
+        if (checkGPSStatus()) {
+            mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+                @Override
+                public void onMyLocationChange(Location location) {
+                    CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
+                    CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
+                    mMap.moveCamera(center);
+                    mMap.animateCamera(zoom);
+
+                }
+            });
+        } else {
+            buildAlertMessageNoGps();
+        }
+    }
+
+    // check if GPS is enable
+    public boolean checkGPSStatus() {
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            return false;
+        }
+        return true;
+
+
+    }
+
+    // show dialog where GPS is not enabled
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        finish();
+                        startActivity(getIntent());
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    // get user coordinates
+    public JSONArray getCurrentUserLocation() {
+
+        JSONArray coordinates = new JSONArray();
+
+        LocationManager locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            double lat = location.getLatitude();
+            double lng = location.getLongitude();
+            JSONObject itemA = new JSONObject();
+            try {
+                itemA.put("lat", lat);
+                itemA.put("lng", lng);
+                coordinates.put(itemA);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.d("Coordonate", coordinates.toString());
+        }
+
+        return coordinates;
+    }
+
 
 }
