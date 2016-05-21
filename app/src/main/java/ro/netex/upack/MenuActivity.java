@@ -1,18 +1,17 @@
 package ro.netex.upack;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MenuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
+public class MenuActivity extends MapActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
     NavigationView navigationView;
     Menu menu;
@@ -43,6 +42,9 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         switch (id) {
             case R.id.supplier:
+                Intent intent = new Intent(context, PackageActivity.class);
+                context.startActivity(intent);
+                super.test();
                 Log.i("Item", String.valueOf(id));
                 break;
             case R.id.pedding_list:
