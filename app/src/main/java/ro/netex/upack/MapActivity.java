@@ -104,36 +104,17 @@ public class MapActivity extends AppCompatActivity
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        try {
-            populateMapWithSuppliers(googleMap);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        getSuppliers();
+        mMap = googleMap;
+
     }
 
-    public void populateMapWithSuppliers(GoogleMap googleMap) throws JSONException {
+    public void populateMapWithSuppliers(JSONObject suppliers) {
 
-        getSuppliers();
-//        for(int i=0;i<this.suppliers){
-
-//        }
-
-//        Iterator iter = this.suppliers.keys();
-//        while(iter.hasNext()){
-//            String key = (String)iter.next();
-//            arr.add(obj.getString(key));
-//        }
-
-
-
-        for ( JSONObject obj : this.suppliers ) {
-            Log.i("populate",obj.toString());
-        }
     }
 
     public void getSuppliers(){
-        this.api = new UPackApi("172.16.4.74");
-        this.suppliers = this.api.call("get_suppliers");
+        this.api = new UPackApi("172.16.4.74", this);
     }
 
 }
