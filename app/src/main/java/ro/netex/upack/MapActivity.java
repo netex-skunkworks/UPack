@@ -1,7 +1,9 @@
 package ro.netex.upack;
 
+import android.app.ListActivity;
 import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -24,6 +26,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
@@ -34,7 +37,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class MapActivity extends AppCompatActivity
-        implements  OnMapReadyCallback {
+        implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     public Toolbar toolbar;
@@ -51,7 +54,6 @@ public class MapActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        Log.d("CONTEXT APP",this.toString());
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -62,7 +64,7 @@ public class MapActivity extends AppCompatActivity
 
     }
 
-    public void addNavigationToolbar(){
+    public void addNavigationToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -106,21 +108,43 @@ public class MapActivity extends AppCompatActivity
     }
 
 
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         getSuppliers();
         mMap = googleMap;
-
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+        }
     }
 
     public void populateMapWithSuppliers(JSONArray suppliers) {
-        Log.d("response",suppliers.toString());
+
+        // parse suppliers list
+        for (int i = 0; i < suppliers.length(); i++) {
+            JSONObject jsonobject = null;
+            JSONObject address = null;
+            try {
+                jsonobject = suppliers.getJSONObject(i);
+                String name = jsonobject.getString("name");
+
+                // get supplier's lat and lng
+                address = jsonobject.getJSONObject("address");
+                Double lat = address.getDouble("lat");
+                Double lng = address.getDouble("lng");
+                // Add a marker supplier coordinates on map
+                LatLng supplierLat = new LatLng(52.1234, 22.1234);
+                mMap.addMarker(new MarkerOptions().position(supplierLat).title(name));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(supplierLat));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
-    public void getSuppliers(){
-        Log.i("suppliers","GET");
-        this.api = new UPackApi("172.16.4.74",this);
+    public void getSuppliers() {
+        this.api = new UPackApi("172.16.4.74", this);
         this.api.call("get_suppliers");
     }
 

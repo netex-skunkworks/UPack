@@ -1,4 +1,5 @@
 package ro.netex.upack;
+
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -18,14 +19,13 @@ public class UPackApi {
     private String serverAddress;
     private MapActivity map;
 
-    public  UPackApi(String serverAddress, MapActivity map){
+    public UPackApi(String serverAddress, MapActivity map) {
         this.map = map;
         this.serverAddress = serverAddress;
     }
 
-    public void call(String route){
-        String test = "blabla";
-        request("http://"+serverAddress+"/rest/"+route+".php");
+    public void call(String route) {
+        request("http://" + serverAddress + "/mockup/" + route + ".php");
     }
 
     public void request(String url) {
