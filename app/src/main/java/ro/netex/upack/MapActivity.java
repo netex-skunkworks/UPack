@@ -66,7 +66,7 @@ public class MapActivity extends AppCompatActivity
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         this.context = this;
-
+        getSuppliers();
         addNavigationToolbar();
 
     }
@@ -140,7 +140,7 @@ public class MapActivity extends AppCompatActivity
                 Double lat = address.getDouble("lat");
                 Double lng = address.getDouble("lng");
                 // Add a marker supplier coordinates on map
-                LatLng supplierLat = new LatLng(lat, lng);
+                LatLng supplierLat = new LatLng(52.1234, 22.1234);
                 mMap.addMarker(new MarkerOptions().position(supplierLat).title(name));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(supplierLat));
 
@@ -152,7 +152,7 @@ public class MapActivity extends AppCompatActivity
     }
 
     public void getSuppliers() {
-        this.api = new UPackApi("hacktm.netex.ro",   this);
+        this.api = new UPackApi("hacktm.netex.ro", this);
         this.api.call("get_suppliers");
     }
 
