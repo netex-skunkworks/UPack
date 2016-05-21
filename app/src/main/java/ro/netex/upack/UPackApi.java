@@ -3,6 +3,8 @@ package ro.netex.upack;
 import android.app.DownloadManager;
 import android.os.StrictMode;
 
+import com.google.android.gms.appdatasearch.GetRecentContextCall;
+
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
@@ -22,8 +24,8 @@ public class UPackApi {
         request(serverAddress+route);
     }
 
-    public void request(String url)
-    {
+    public void request(String url) {
         // send request to API
+
     }
 }
