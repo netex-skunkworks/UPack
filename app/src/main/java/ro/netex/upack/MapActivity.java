@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -32,17 +33,21 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.vision.barcode.Barcode;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -135,6 +140,7 @@ public class MapActivity extends AppCompatActivity
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
             zoomMapToCurrentLocation();
             getCurrentUserLocation();
+            insertRootNavigation();
         }
 
     }
@@ -165,7 +171,7 @@ public class MapActivity extends AppCompatActivity
         }
     }
 
-    public void test(){
+    public void test() {
         AppController appController = new AppController(this);
         appController.getAvailablePackages(this.context);
     }
@@ -174,16 +180,18 @@ public class MapActivity extends AppCompatActivity
     private void zoomMapToCurrentLocation() {
 
         if (checkGPSStatus()) {
-            mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
-                @Override
-                public void onMyLocationChange(Location location) {
-                    CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
-                    CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
-                    mMap.moveCamera(center);
-                    mMap.animateCamera(zoom);
+            JSONObject coordinates = getCurrentUserLocation();
+            LatLng latLng = null;
+            try {
+                latLng = new LatLng(coordinates.getDouble("lat"), coordinates.getDouble("lng"));
+                CameraUpdate center = CameraUpdateFactory.newLatLng(latLng);
+                CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
+                mMap.moveCamera(center);
+                mMap.animateCamera(zoom);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-                }
-            });
         } else {
             buildAlertMessageNoGps();
         }
@@ -239,7 +247,6 @@ public class MapActivity extends AppCompatActivity
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Log.d("Coordonate", coordinates.toString());
         }
 
         return coordinates;
@@ -247,12 +254,24 @@ public class MapActivity extends AppCompatActivity
 
     // set navigation route to map
 
-    public void insertRootNavigation(JSONObject coordinates){
+    public void insertRootNavigation() {
         double latSupplier = 45.7554527;
         double lngSupplier = 21.2331563;
 
         double latDestination = 45.7542572;
         double lngDestination = 21.246933;
+
+        PolylineOptions options = new PolylineOptions();
+
+        options.color(Color.parseColor("#CC0000FF"));
+        options.width(5);
+        options.visible(true);
+
+
+        options.add(new LatLng(latSupplier, lngSupplier));
+        options.add(new LatLng(latDestination, lngDestination));
+
+        mMap.addPolyline(options);
     }
 
 
