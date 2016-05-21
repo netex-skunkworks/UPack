@@ -25,6 +25,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+
 public class MapActivity extends AppCompatActivity
         implements  OnMapReadyCallback {
 
@@ -35,6 +37,8 @@ public class MapActivity extends AppCompatActivity
     public MenuActivity navigationMenu;
     public Menu menu;
     int currentItemId;
+    List suppliers[];
+    UPackApi api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +99,12 @@ public class MapActivity extends AppCompatActivity
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        populateMapWithSuppliers(googleMap);
+    }
+
+    public void populateMapWithSuppliers(GoogleMap googleMap){
+
+        getSuppliers();
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
@@ -108,4 +118,10 @@ public class MapActivity extends AppCompatActivity
         mMap.addMarker(new MarkerOptions().position(sydney).title(""));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
+
+    public void getSuppliers(){
+        this.api = new UPackApi("172.16.4.74");
+        this.api.call("/suppliers");
+    }
+
 }

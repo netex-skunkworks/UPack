@@ -14,7 +14,7 @@ import java.io.IOException;
 public class UPackApi {
     private String serverAddress;
 
-    public void UPackApi(String serverAddress){
+    public  UPackApi(String serverAddress){
         this.serverAddress = serverAddress;
     }
 
@@ -24,6 +24,6 @@ public class UPackApi {
 
     public void request(String url)
     {
-
+        // send request to API
     }
 }
