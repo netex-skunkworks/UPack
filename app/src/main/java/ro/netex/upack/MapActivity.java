@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -33,21 +32,17 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.vision.barcode.Barcode;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -78,8 +73,8 @@ public class MapActivity extends AppCompatActivity
         this.context = this;
 
         // Application controller calls get_suppliers;
-        appController = new AppController(this);
-//        appController.getSuppliers(this);
+        appController = new AppController(this, this.context);
+        appController.getSuppliers(this);
 
 
         addNavigationToolbar();
@@ -171,7 +166,7 @@ public class MapActivity extends AppCompatActivity
         }
     }
 
-    public void test() {
+    public void test(){
         AppController appController = new AppController(this);
         appController.getAvailablePackages(this.context);
     }
