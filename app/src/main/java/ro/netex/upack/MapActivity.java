@@ -248,7 +248,11 @@ public class MapActivity extends AppCompatActivity
     // set navigation route to map
 
     public void insertRootNavigation(JSONObject coordinates){
+        double latSupplier = 45.7554527;
+        double lngSupplier = 21.2331563;
 
+        double latDestination = 45.7542572;
+        double lngDestination = 21.246933;
     }
 
 
