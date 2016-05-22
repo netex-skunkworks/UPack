@@ -27,15 +27,16 @@ import java.util.List;
  * Created by user on 5/21/16.
  */
 public class RouteDrawer {
+    static MapActivity MapContext;
     String requestUrl;
     JSONObject currentUserLocation;
     private Context context;
     public JSONObject routeCoordinations = new JSONObject();
     GoogleMap map;
 
-    public RouteDrawer(Context context){
-        this.context = context;
-        setUrl("http://hacktm.netex.ro/rest/get_package.php?id=204");
+    public RouteDrawer(int packageId){
+        this.context = RouteDrawer.MapContext;
+        setUrl("http://hacktm.netex.ro/rest/get_package.php?id="+packageId);
     }
 
     public void setUrl(String url){

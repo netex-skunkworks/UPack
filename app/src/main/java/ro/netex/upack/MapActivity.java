@@ -68,6 +68,7 @@ public class MapActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        RouteDrawer.MapContext = this;
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -78,7 +79,6 @@ public class MapActivity extends AppCompatActivity
         UPackApi.activity = this.context;
         appController = new AppController(this);
         appController.getSuppliers();
-
         addNavigationToolbar();
 
     }
@@ -137,7 +137,6 @@ public class MapActivity extends AppCompatActivity
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
             zoomMapToCurrentLocation();
             getCurrentUserLocation();
-            insertRootNavigation();
         }
 
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
@@ -255,8 +254,8 @@ public class MapActivity extends AppCompatActivity
 
     // set navigation route to map
 
-    public void drawerRootNavigation() {
-        RouteDrawer draw = new RouteDrawer(this);
+    public void drawRootNavigation(int package_id) {
+        RouteDrawer draw = new RouteDrawer(package_id);
         draw.setUserCurrentLocation(getCurrentUserLocation());
         draw.setGoogleMap(mMap);
         draw.drawRoute();
