@@ -1,12 +1,15 @@
 package ro.netex.upack;
+
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -34,11 +37,11 @@ public class UPackApi {
     public void call(String route, Object context, String status, String supplierId, String packageId) {
         this.route = route;
         this.context = context;
-        try{
-            String url = "http://" + serverAddress + "/rest/" + route + ".php?courier_id="+ curierId +"&position="+ currentLat +","+ currentLgn + "&status="+ status+"&supplier_id="+supplierId+"&package_id="+packageId;
+        try {
+            String url = "http://" + serverAddress + "/rest/" + route + ".php?courier_id=" + curierId + "&position=" + currentLat + "," + currentLgn + "&status=" + status + "&supplier_id=" + supplierId + "&package_id=" + packageId;
             Log.d("URL:", url);
             request(url);
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.d(TAG, e.getMessage());
         }
     }
@@ -65,9 +68,8 @@ public class UPackApi {
     }
 
 
-
-    public void update(JSONArray response){
-        switch (route){
+    public void update(JSONArray response) {
+        switch (route) {
             case "get_suppliers":
                 ((MapActivity) context).populateMapWithSuppliers(response);
                 break;

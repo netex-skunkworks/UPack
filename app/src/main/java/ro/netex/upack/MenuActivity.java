@@ -19,14 +19,14 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class MenuActivity extends MapActivity implements NavigationView.OnNavigationItemSelectedListener  {
+public class MenuActivity extends MapActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     NavigationView navigationView;
     Menu menu;
     DrawerLayout drawer;
     Context context;
 
-    public void setContext(Context context){
+    public void setContext(Context context) {
         this.context = context;
     }
 

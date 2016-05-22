@@ -169,7 +169,7 @@ public class MapActivity extends AppCompatActivity
                 // Add a marker supplier coordinates on map
                 LatLng supplierLat = new LatLng(lat, lng);
                 mMap.addMarker(new MarkerOptions().position(supplierLat).title(name).snippet(id));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(supplierLat));
+//                mMap.moveCamera(CameraUpdateFactory.newLatLng(supplierLat));
 
             } catch (JSONException e) {
                 e.printStackTrace();

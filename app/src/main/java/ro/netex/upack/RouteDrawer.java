@@ -123,6 +123,9 @@ public class RouteDrawer {
 
     public void drawPath(JSONObject googleApiResponse) {
         try {
+//            UPackApi.activity = RouteDrawer.MapContext;
+//            AppController appController = new AppController(this);
+//            appController.getSuppliers();
 //            //Tranform the string into a json object
             JSONArray routeArray = googleApiResponse.getJSONArray("routes");
             JSONObject routesPath = routeArray.getJSONObject(0);
@@ -142,6 +145,7 @@ public class RouteDrawer {
     }
 
     public void getRequestToGoogleDraw() {
+        Log.d("Test URL", this.requestUrl);
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this.context);
         // Request a string response from the provided URL.

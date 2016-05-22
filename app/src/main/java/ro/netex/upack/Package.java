@@ -20,7 +20,7 @@ public class Package {
     public double weight;
 
 
-    public Package(int id, String status, double weight){
+    public Package(int id, String status, double weight) {
         setSupplier_id(id);
         setStatus(status);
         setWeight(weight);

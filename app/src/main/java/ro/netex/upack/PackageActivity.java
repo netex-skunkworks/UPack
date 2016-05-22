@@ -42,7 +42,7 @@ public class PackageActivity extends FragmentActivity {
         this.context = this;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            if (extras.getString("SUPPLIER_ID") != null){
+            if (extras.getString("SUPPLIER_ID") != null) {
                 // TODO: get AVAILABLE ORDERS->by supplierID
                 String status = extras.getString("STATUS");
                 String supplierId = extras.getString("SUPPLIER_ID");
@@ -50,7 +50,7 @@ public class PackageActivity extends FragmentActivity {
                 AppController appController = new AppController(this);
                 appController.getPackagesBySupplierId(status, supplierId);
 
-            }else{
+            } else {
                 String status = extras.getString("STATUS");
                 UPackApi.activity = this;
                 AppController appController = new AppController(this);
@@ -60,23 +60,22 @@ public class PackageActivity extends FragmentActivity {
         }
     }
 
-    public void populateList(JSONArray data)
-    {
+    public void populateList(JSONArray data) {
         ListView listView1 = (ListView) findViewById(R.id.packageList);
 
 
         ArrayList<Map<String, String>> itemsList = new ArrayList<Map<String, String>>();
-        String[] from = { "id", "name" };
-        int[] to = { android.R.id.text1, android.R.id.text2 };
+        String[] from = {"id", "name"};
+        int[] to = {android.R.id.text1, android.R.id.text2};
 
         for (int i = 0; i < data.length(); i++) {
             JSONObject address = null;
             JSONObject delivery_description = null;
             try {
-                address              = data.getJSONObject(i).getJSONObject("customer").getJSONObject("address");
+                address = data.getJSONObject(i).getJSONObject("customer").getJSONObject("address");
                 delivery_description = data.getJSONObject(i).getJSONObject("delivery_description");
-                int id               = data.getJSONObject(i).getInt("id");
-                itemsList.add(putData(String.valueOf(id), address.getString("street")+" - "+delivery_description.getString("distance")+" ("+delivery_description.getString("duration")+")"));
+                int id = data.getJSONObject(i).getInt("id");
+                itemsList.add(putData(String.valueOf(id), address.getString("street") + " - " + delivery_description.getString("distance") + " (" + delivery_description.getString("duration") + ")"));
 
 
             } catch (JSONException e) {
@@ -91,10 +90,12 @@ public class PackageActivity extends FragmentActivity {
         listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                Log.d("Item ID", String.valueOf(arg0) + " AND " + String.valueOf(arg1));
+                int package_id = 205;
                 // Instantiate the RequestQueue.
                 RequestQueue queue = Volley.newRequestQueue(context);
                 // Request a string response from the provided URL.
-                JsonObjectRequest jsonObjReq = new JsonObjectRequest("http://hacktm.netex.ro/rest/get_package.php?id=204", null,
+                JsonObjectRequest jsonObjReq = new JsonObjectRequest("http://hacktm.netex.ro/rest/get_package.php?id=" + package_id, null,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
@@ -129,6 +130,7 @@ public class PackageActivity extends FragmentActivity {
         String volumeWidth = null;
         String volumeLength = null;
         String weight = null;
+        int packageId = 0;
         JSONObject customerAddress = null;
         JSONObject supplierAddress = null;
         try {
@@ -136,6 +138,7 @@ public class PackageActivity extends FragmentActivity {
             volumeWidth = packageDetails.getString("vol_width");
             volumeLength = packageDetails.getString("vol_length");
             weight = packageDetails.getString("weight");
+            packageId = packageDetails.getInt("id");
 
             customerAddress = packageDetails.getJSONObject("customer").getJSONObject("address");
             supplierAddress = packageDetails.getJSONObject("supplier").getJSONObject("address");
@@ -145,12 +148,13 @@ public class PackageActivity extends FragmentActivity {
         }
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         try {
-            builder.setMessage(volumeWidth+" x "+volumeHeight+" x "+volumeLength+" ("+weight+")\nFrom: "+supplierAddress.getString("street")+" no."+supplierAddress.getString("number")+"\nTo:"
-            +customerAddress.getString("street")+" no."+customerAddress.getString("number"))
+            final int finalPackageId = packageId;
+            builder.setMessage(volumeWidth + " x " + volumeHeight + " x " + volumeLength + " (" + weight + ")\nFrom: " + supplierAddress.getString("street") + " no." + supplierAddress.getString("number") + "\nTo:"
+                    + customerAddress.getString("street") + " no." + customerAddress.getString("number"))
                     .setCancelable(false)
                     .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
                         public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                            RouteDrawer.MapContext.drawRootNavigation(204);
+                            RouteDrawer.MapContext.drawRootNavigation(finalPackageId);
                             RouteDrawer.MapContext.zoomMapToCurrentLocation();
                             finish();
 
