@@ -34,19 +34,20 @@ public class RouteDrawer {
     public JSONObject routeCoordinations = new JSONObject();
     GoogleMap map;
 
-    public RouteDrawer(int packageId){
+    public RouteDrawer(int packageId) {
         this.context = RouteDrawer.MapContext;
-        setUrl("http://hacktm.netex.ro/rest/get_package.php?id="+packageId);
+        setUrl("http://hacktm.netex.ro/rest/get_package.php?id=" + packageId);
     }
 
-    public void setUrl(String url){
+    public void setUrl(String url) {
         this.requestUrl = url;
     }
-    public void setGoogleMap(GoogleMap map){
+
+    public void setGoogleMap(GoogleMap map) {
         this.map = map;
     }
 
-    public void setUserCurrentLocation(JSONObject coordinates){
+    public void setUserCurrentLocation(JSONObject coordinates) {
         this.currentUserLocation = coordinates;
     }
 
@@ -56,7 +57,7 @@ public class RouteDrawer {
             urlString.append("http://maps.googleapis.com/maps/api/directions/json");
             urlString.append("?origin=");// from
 
-                urlString.append(Double.toString(routeCoordinations.getDouble("currentLat")));
+            urlString.append(Double.toString(routeCoordinations.getDouble("currentLat")));
 
             urlString.append(",");
             urlString
@@ -104,14 +105,14 @@ public class RouteDrawer {
     // draw path between points
     public void setJsonRouteCoordinations(JSONObject routes) {
         try {
-            this.routeCoordinations.put("currentLat",this.currentUserLocation.getDouble("lat"));
-            this.routeCoordinations.put("currentLng",this.currentUserLocation.getDouble("lng"));
+            this.routeCoordinations.put("currentLat", this.currentUserLocation.getDouble("lat"));
+            this.routeCoordinations.put("currentLng", this.currentUserLocation.getDouble("lng"));
             JSONObject customerAddress = routes.getJSONObject("customer").getJSONObject("address");
             JSONObject supplierAddress = routes.getJSONObject("supplier").getJSONObject("address");
-            this.routeCoordinations.put("supplierLat",supplierAddress.getDouble("lat"));
-            this.routeCoordinations.put("supplierLng",supplierAddress.getDouble("lng"));
-            this.routeCoordinations.put("customerLat",customerAddress.getDouble("lat"));
-            this.routeCoordinations.put("customerLng",customerAddress.getDouble("lng"));
+            this.routeCoordinations.put("supplierLat", supplierAddress.getDouble("lat"));
+            this.routeCoordinations.put("supplierLng", supplierAddress.getDouble("lng"));
+            this.routeCoordinations.put("customerLat", customerAddress.getDouble("lat"));
+            this.routeCoordinations.put("customerLng", customerAddress.getDouble("lng"));
             buildUrl();
             getRequestToGoogleDraw();
         } catch (JSONException e) {
@@ -120,7 +121,7 @@ public class RouteDrawer {
 
     }
 
-    public void drawPath(JSONObject googleApiResponse){
+    public void drawPath(JSONObject googleApiResponse) {
         try {
 //            //Tranform the string into a json object
             JSONArray routeArray = googleApiResponse.getJSONArray("routes");
@@ -140,7 +141,7 @@ public class RouteDrawer {
         }
     }
 
-    public void getRequestToGoogleDraw(){
+    public void getRequestToGoogleDraw() {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this.context);
         // Request a string response from the provided URL.
