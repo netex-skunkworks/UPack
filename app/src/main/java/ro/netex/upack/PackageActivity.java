@@ -139,7 +139,9 @@ public class PackageActivity extends FragmentActivity {
                     .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
                         public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
                             RouteDrawer.MapContext.drawRootNavigation(204);
+                            RouteDrawer.MapContext.zoomMapToCurrentLocation();
                             finish();
+
                         }
                     })
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {

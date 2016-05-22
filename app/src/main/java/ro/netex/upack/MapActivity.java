@@ -178,7 +178,7 @@ public class MapActivity extends AppCompatActivity
     }
 
     // set zoom to current user location
-    private void zoomMapToCurrentLocation() {
+    public void zoomMapToCurrentLocation() {
 
         if (checkGPSStatus()) {
             JSONObject coordinates = getCurrentUserLocation();
