@@ -140,8 +140,9 @@ public class MapActivity extends AppCompatActivity
         }
 
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override  public void onInfoWindowClick(Marker marker) {
-                Intent intent = new Intent(MapActivity.this,PackageActivity.class);
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Intent intent = new Intent(MapActivity.this, PackageActivity.class);
                 intent.putExtra("STATUS", "AVAILABLE");
                 intent.putExtra("SUPPLIER_ID", marker.getSnippet());
                 startActivity(intent);
@@ -159,7 +160,7 @@ public class MapActivity extends AppCompatActivity
             try {
                 jsonobject = suppliers.getJSONObject(i);
                 String name = jsonobject.getString("name");
-                String id   = jsonobject.getString("id");
+                String id = jsonobject.getString("id");
                 // get supplier's lat and lng
                 address = jsonobject.getJSONObject("address");
                 Double lat = address.getDouble("lat");
