@@ -24,6 +24,12 @@ public class PackageActivity extends FragmentActivity {
         if (extras != null) {
             if (extras.getString("SUPPLIER_ID") != null){
                 // TODO: get AVAILABLE ORDERS->by supplierID
+                String status = extras.getString("STATUS");
+                String supplierId = extras.getString("SUPPLIER_ID");
+                UPackApi.activity = this;
+                AppController appController = new AppController(this);
+                appController.getPackagesBySupplierId(status, supplierId);
+
             }else{
                 String status = extras.getString("STATUS");
                 UPackApi.activity = this;
