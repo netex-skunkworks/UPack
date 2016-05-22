@@ -11,14 +11,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MenuActivity extends MapActivity implements NavigationView.OnNavigationItemSelectedListener  {
+public class MenuActivity extends MapActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     NavigationView navigationView;
     Menu menu;
     DrawerLayout drawer;
     Context context;
 
-    public void setContext(Context context){
+    public void setContext(Context context) {
         this.context = context;
     }
 
@@ -44,7 +44,6 @@ public class MenuActivity extends MapActivity implements NavigationView.OnNaviga
             case R.id.supplier:
                 Intent intent = new Intent(context, PackageActivity.class);
                 context.startActivity(intent);
-                super.test();
                 Log.i("Item", String.valueOf(id));
                 break;
             case R.id.pedding_list:

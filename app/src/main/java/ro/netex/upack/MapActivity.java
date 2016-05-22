@@ -77,8 +77,6 @@ public class MapActivity extends AppCompatActivity
         // Application controller calls get_suppliers;
         appController = new AppController(this, this.context);
         appController.getSuppliers(this);
-
-
         addNavigationToolbar();
 
     }
@@ -129,15 +127,13 @@ public class MapActivity extends AppCompatActivity
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        appController.getSuppliers(this);
         mMap = googleMap;
         mMap.getUiSettings().setMapToolbarEnabled(false);
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
             zoomMapToCurrentLocation();
-            getCurrentUserLocation();
-            insertRootNavigation();
+            drawerRootNavigation();
         }
 
     }
@@ -176,6 +172,7 @@ public class MapActivity extends AppCompatActivity
             LatLng latLng = null;
             try {
                 latLng = new LatLng(coordinates.getDouble("lat"), coordinates.getDouble("lng"));
+                Log.d("Coordinated", String.valueOf(coordinates.getDouble("lat"))+"  "+String.valueOf(coordinates.getDouble("lng")));
                 CameraUpdate center = CameraUpdateFactory.newLatLng(latLng);
                 CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
                 mMap.moveCamera(center);
@@ -246,24 +243,12 @@ public class MapActivity extends AppCompatActivity
 
     // set navigation route to map
 
-    public void insertRootNavigation() {
-        double latSupplier = 45.7554527;
-        double lngSupplier = 21.2331563;
+    public void drawerRootNavigation() {
+        RouteDrawer draw = new RouteDrawer(this);
+        draw.setUserCurrentLocation(getCurrentUserLocation());
+        draw.setGoogleMap(mMap);
+        draw.drawRoute();
 
-        double latDestination = 45.7542572;
-        double lngDestination = 21.246933;
-
-        PolylineOptions options = new PolylineOptions();
-
-        options.color(Color.parseColor("#CC0000FF"));
-        options.width(5);
-        options.visible(true);
-
-
-        options.add(new LatLng(latSupplier, lngSupplier));
-        options.add(new LatLng(latDestination, lngDestination));
-
-        mMap.addPolyline(options);
     }
 
 
