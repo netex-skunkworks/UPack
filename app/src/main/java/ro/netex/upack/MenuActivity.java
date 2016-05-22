@@ -10,6 +10,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
 
 public class MenuActivity extends MapActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
@@ -39,23 +47,30 @@ public class MenuActivity extends MapActivity implements NavigationView.OnNaviga
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+
+        Intent intent;
+        intent = new Intent(context, PackageActivity.class);
         int id = item.getItemId();
         switch (id) {
-            case R.id.supplier:
-                Intent intent = new Intent(context, PackageActivity.class);
+            case R.id.accepted_list:
+                intent.putExtra("STATUS", "AVAILABLE");
                 context.startActivity(intent);
-                super.test();
-                Log.i("Item", String.valueOf(id));
                 break;
-            case R.id.pedding_list:
-                Log.i("Item", String.valueOf(id));
+
+            case R.id.pending_list:
+                intent.putExtra("STATUS", "ENROUTE");
+                context.startActivity(intent);
                 break;
-            case R.id.delivery:
-                Log.i("Item", String.valueOf(id));
+
+            case R.id.delivered_list:
+                intent.putExtra("STATUS", "DELIVERED");
+                context.startActivity(intent);
                 break;
+
             case R.id.account:
                 Log.i("Item", String.valueOf(id));
                 break;
+
             case R.id.login:
                 Log.i("Item", String.valueOf(id));
                 break;

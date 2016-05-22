@@ -75,9 +75,9 @@ public class MapActivity extends AppCompatActivity
         this.context = this;
 
         // Application controller calls get_suppliers;
-        appController = new AppController(this, this.context);
+        UPackApi.activity = this.context;
+        appController = new AppController(this);
         appController.getSuppliers();
-
 
         addNavigationToolbar();
 
@@ -88,7 +88,7 @@ public class MapActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        currentItemId = R.id.supplier;
+//        currentItemId = R.id.supplier;
         navigationMenu = new MenuActivity();
         navigationMenu.setContext(this);
         navigationMenu.setNavigationToolbar(navigationView, menu, toolbar, drawer, currentItemId);
@@ -140,6 +140,15 @@ public class MapActivity extends AppCompatActivity
             insertRootNavigation();
         }
 
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override  public void onInfoWindowClick(Marker marker) {
+                Intent intent = new Intent(MapActivity.this,PackageActivity.class);
+                intent.putExtra("STATUS", "AVAILABLE");
+                intent.putExtra("SUPPLIER_ID", marker.getSnippet());
+                startActivity(intent);
+            }
+        });
+
     }
 
     public void populateMapWithSuppliers(JSONArray suppliers) {
@@ -151,14 +160,14 @@ public class MapActivity extends AppCompatActivity
             try {
                 jsonobject = suppliers.getJSONObject(i);
                 String name = jsonobject.getString("name");
-
+                String id   = jsonobject.getString("id");
                 // get supplier's lat and lng
                 address = jsonobject.getJSONObject("address");
                 Double lat = address.getDouble("lat");
                 Double lng = address.getDouble("lng");
                 // Add a marker supplier coordinates on map
                 LatLng supplierLat = new LatLng(lat, lng);
-                mMap.addMarker(new MarkerOptions().position(supplierLat).title(name));
+                mMap.addMarker(new MarkerOptions().position(supplierLat).title(name).snippet(id));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(supplierLat));
 
             } catch (JSONException e) {
@@ -166,11 +175,6 @@ public class MapActivity extends AppCompatActivity
             }
 
         }
-    }
-
-    public void test(){
-        AppController appController = new AppController(this, this.context);
-        appController.getAvailablePackages();
     }
 
     // set zoom to current user location
