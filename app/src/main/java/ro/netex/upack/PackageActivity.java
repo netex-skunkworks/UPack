@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -110,9 +111,9 @@ public class PackageActivity extends FragmentActivity {
         listView1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View view, int pos, long id) {
-                TextView v = (TextView)view.findViewById(R.id.text1);
-                String itemId = v.getText().toString();
-                Log.d("idul:", itemId);
+//                TextView v = (TextView)view.findViewById(R.id.text1);
+//                String itemId = v.getText().toString();
+                Log.d("idul:", String.valueOf(pos));
 //                AppController appController = new AppController(this);
 //                appController.updateStatus("accepted", String.valueOf(pos));
                 return true;
