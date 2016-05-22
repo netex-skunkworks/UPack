@@ -31,11 +31,11 @@ public class UPackApi {
         this.serverAddress = serverAddress;
     }
 
-    public void call(String route, Object context, String status) {
+    public void call(String route, Object context, String status, String supplierId) {
         this.route = route;
         this.context = context;
         try{
-            String url = "http://" + serverAddress + "/rest/" + route + ".php?courier_id="+ curierId +"&position="+ currentLat +","+ currentLgn + "&status="+ status;
+            String url = "http://" + serverAddress + "/rest/" + route + ".php?courier_id="+ curierId +"&position="+ currentLat +","+ currentLgn + "&status="+ status+"&supplier_id="+supplierId;
             Log.d("URL:", url);
             request(url);
         }catch (Exception e){

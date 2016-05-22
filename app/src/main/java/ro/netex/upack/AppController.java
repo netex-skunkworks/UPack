@@ -18,12 +18,19 @@ public class AppController {
     public void getSuppliers()
     {
 
-        this.api.call("get_suppliers", context, "");
+        this.api.call("get_suppliers", context, "" , "0");
     }
 
     public void getPackages(String status)
     {
-        this.api.call("get_packages", context, status);
+        this.api.call("get_packages", context, status, "0");
     }
+
+    public void getPackagesBySupplierId(String status, String supplierId)
+    {
+        this.api.call("get_packages", context, status, supplierId);
+    }
+
+
 
 }
