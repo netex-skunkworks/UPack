@@ -139,6 +139,7 @@ public class MapActivity extends AppCompatActivity
             getCurrentUserLocation();
         }
 
+
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
