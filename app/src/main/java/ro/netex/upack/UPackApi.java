@@ -24,18 +24,18 @@ public class UPackApi {
 
     public UPackApi(String serverAddress, Object context, String curierId) {
         this.curierId = "51";
-        this.currentLat = 45.7566;
-        this.currentLgn = 21.214805;
+        this.currentLat = 45.7397627;
+        this.currentLgn = 21.1938563;
 
         this.context = context;
         this.serverAddress = serverAddress;
     }
 
-    public void call(String route, Object context, String status, String supplierId) {
+    public void call(String route, Object context, String status, String supplierId, String packageId) {
         this.route = route;
         this.context = context;
         try{
-            String url = "http://" + serverAddress + "/rest/" + route + ".php?courier_id="+ curierId +"&position="+ currentLat +","+ currentLgn + "&status="+ status+"&supplier_id="+supplierId;
+            String url = "http://" + serverAddress + "/rest/" + route + ".php?courier_id="+ curierId +"&position="+ currentLat +","+ currentLgn + "&status="+ status+"&supplier_id="+supplierId+"&package_id="+packageId;
             Log.d("URL:", url);
             request(url);
         }catch (Exception e){

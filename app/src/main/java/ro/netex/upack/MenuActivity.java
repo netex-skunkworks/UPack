@@ -53,7 +53,7 @@ public class MenuActivity extends MapActivity implements NavigationView.OnNaviga
         int id = item.getItemId();
         switch (id) {
             case R.id.accepted_list:
-                intent.putExtra("STATUS", "AVAILABLE");
+                intent.putExtra("STATUS", "ACCEPTED");
                 context.startActivity(intent);
                 break;
 
