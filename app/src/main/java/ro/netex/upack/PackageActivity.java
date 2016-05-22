@@ -1,13 +1,8 @@
 package ro.netex.upack;
 
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -18,7 +13,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PackageActivity extends AppCompatActivity {
+public class PackageActivity extends FragmentActivity {
 
     public Menu menu;
     @Override
@@ -68,5 +63,22 @@ public class PackageActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, items);
         listView1.setAdapter(adapter);
+
+        listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                // TODO: show details
+            }
+        });
+
+        listView1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                UPackApi.activity = this;
+                AppController appController = new AppController(this);
+                appController.updateStatus("accepted");
+                return true;
+            }
+        });
     }
 }

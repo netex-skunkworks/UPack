@@ -31,6 +31,11 @@ public class AppController {
         this.api.call("get_packages", context, status, supplierId);
     }
 
+    public void updateStatus(String status)
+    {
+        this.api.call("set_package_status", context, status, "0");
+    }
+
 
 
 }
