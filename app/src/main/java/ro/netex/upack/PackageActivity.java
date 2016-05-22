@@ -1,8 +1,11 @@
 package ro.netex.upack;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -60,5 +63,22 @@ public class PackageActivity extends FragmentActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, items);
         listView1.setAdapter(adapter);
+
+        listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                // TODO: show details
+            }
+        });
+
+        listView1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                UPackApi.activity = this;
+                AppController appController = new AppController(this);
+                appController.updateStatus("accepted");
+                return true;
+            }
+        });
     }
 }
