@@ -5,31 +5,25 @@ import android.content.Context;
 public class AppController {
 
     UPackApi api;
-    MapActivity mapActivity;
+    Object context;
 
 
-    public AppController(MapActivity mapActivity, Context context)
+    public AppController(Object context)
     {
-        this.mapActivity = mapActivity;
-        this.api = new UPackApi(mapActivity, "hacktm.netex.ro", context, "0");
+        this.api = new UPackApi("hacktm.netex.ro", context, "0");
+        this.context = context;
     }
 
 
-    public void getSuppliers(Object context)
+    public void getSuppliers()
     {
-        this.api.call("get_suppliers", context);
+
+        this.api.call("get_suppliers", context, "");
     }
 
-    public void getAvailablePackages(Object context) {
-        this.api.call("get_packages", context);
+    public void getPackages(String status)
+    {
+        this.api.call("get_packages", context, status);
     }
 
-    public void getPendingPackages(Object context) {
-
-        this.api.call("get_packages", context);
-    }
-
-    public void getPickedPackages(Object context) {
-        this.api.call("get_packages", context);
-    }
 }

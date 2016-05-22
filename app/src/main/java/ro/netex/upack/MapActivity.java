@@ -75,8 +75,10 @@ public class MapActivity extends AppCompatActivity
         this.context = this;
 
         // Application controller calls get_suppliers;
-        appController = new AppController(this, this.context);
-        appController.getSuppliers(this);
+        UPackApi.activity = this.context;
+        appController = new AppController(this);
+        appController.getSuppliers();
+
         addNavigationToolbar();
 
     }
@@ -86,7 +88,7 @@ public class MapActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        currentItemId = R.id.supplier;
+//        currentItemId = R.id.supplier;
         navigationMenu = new MenuActivity();
         navigationMenu.setContext(this);
         navigationMenu.setNavigationToolbar(navigationView, menu, toolbar, drawer, currentItemId);
@@ -127,14 +129,25 @@ public class MapActivity extends AppCompatActivity
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        appController.getSuppliers();
         mMap = googleMap;
         mMap.getUiSettings().setMapToolbarEnabled(false);
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
             zoomMapToCurrentLocation();
-            drawerRootNavigation();
+            getCurrentUserLocation();
+            insertRootNavigation();
         }
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override  public void onInfoWindowClick(Marker marker) {
+                Intent intent = new Intent(MapActivity.this,PackageActivity.class);
+                intent.putExtra("STATUS", "AVAILABLE");
+                intent.putExtra("SUPPLIER_ID", marker.getSnippet());
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -147,14 +160,14 @@ public class MapActivity extends AppCompatActivity
             try {
                 jsonobject = suppliers.getJSONObject(i);
                 String name = jsonobject.getString("name");
-
+                String id   = jsonobject.getString("id");
                 // get supplier's lat and lng
                 address = jsonobject.getJSONObject("address");
                 Double lat = address.getDouble("lat");
                 Double lng = address.getDouble("lng");
                 // Add a marker supplier coordinates on map
                 LatLng supplierLat = new LatLng(lat, lng);
-                mMap.addMarker(new MarkerOptions().position(supplierLat).title(name));
+                mMap.addMarker(new MarkerOptions().position(supplierLat).title(name).snippet(id));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(supplierLat));
 
             } catch (JSONException e) {
@@ -172,7 +185,6 @@ public class MapActivity extends AppCompatActivity
             LatLng latLng = null;
             try {
                 latLng = new LatLng(coordinates.getDouble("lat"), coordinates.getDouble("lng"));
-                Log.d("Coordinated", String.valueOf(coordinates.getDouble("lat"))+"  "+String.valueOf(coordinates.getDouble("lng")));
                 CameraUpdate center = CameraUpdateFactory.newLatLng(latLng);
                 CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
                 mMap.moveCamera(center);

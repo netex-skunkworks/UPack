@@ -1,5 +1,6 @@
 package ro.netex.upack;
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -14,28 +15,27 @@ public class UPackApi {
     public static final String TAG = "UPackAPI";
 
     private String serverAddress;
-    private MapActivity map;
     private double currentLat;
     private double currentLgn;
     private String curierId;
     private String route;
     private Object context;
+    public static Object activity;
 
-    public UPackApi(MapActivity map, String serverAddress, Context context, String curierId) {
-        this.curierId = "0";
-        this.currentLat = 43.12345;
-        this.currentLgn = 22.12345;
+    public UPackApi(String serverAddress, Object context, String curierId) {
+        this.curierId = "51";
+        this.currentLat = 45.7566;
+        this.currentLgn = 21.214805;
 
         this.context = context;
-        this.map = map;
         this.serverAddress = serverAddress;
     }
 
-    public void call(String route, Object context) {
+    public void call(String route, Object context, String status) {
         this.route = route;
         this.context = context;
         try{
-            String url = "http://" + serverAddress + "/rest/" + route + ".php?curierId="+curierId+"&lat="+currentLat+"&lgn="+currentLgn;
+            String url = "http://" + serverAddress + "/rest/" + route + ".php?courier_id="+ curierId +"&position="+ currentLat +","+ currentLgn + "&status="+ status;
             Log.d("URL:", url);
             request(url);
         }catch (Exception e){
@@ -43,9 +43,10 @@ public class UPackApi {
         }
     }
 
-   public void request(String url) {
+    public void request(String url) {
         // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(map);
+        Log.d("context:", UPackApi.activity.toString());
+        RequestQueue queue = Volley.newRequestQueue((Context) UPackApi.activity);
         // Request a string response from the provided URL.
         JsonArrayRequest jsonObjReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
@@ -72,7 +73,7 @@ public class UPackApi {
                 break;
 
             case "get_packages":
-                ((PackageActivity) context).populateList();
+                ((PackageActivity) context).populateList(response);
                 break;
         }
     }
